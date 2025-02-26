@@ -1,0 +1,39 @@
+Documentación del Proyecto Docker con Next.js
+
+1. Enlace del Repositorio:
+https://github.com/SardaVG/DockerActividad.git
+
+2. Explicación del Dockerfile:
+- FROM node:18-alpine: Usa la imagen base de Node.js 18 con Alpine Linux
+- WORKDIR /app: Establece el directorio de trabajo dentro del contenedor
+- COPY package*.json ./: Copia los archivos package.json y package-lock.json
+- RUN npm install: Instala las dependencias del proyecto
+- COPY . .: Copia todos los archivos del proyecto al contenedor
+- RUN npm run build: Construye la aplicación Next.js
+- EXPOSE 3000: Expone el puerto 3000
+- CMD ["npm", "start"]: Comando para iniciar la aplicación
+
+3. Explicación del docker-compose.yml:
+- version: '3': Especifica la versión de Docker Compose
+- services: Define los servicios del proyecto
+  - web: Nombre del servicio principal
+    - build: .: Construye la imagen usando el Dockerfile local
+    - ports: Mapea el puerto 3000 del contenedor al puerto 3000 del host
+    - volumes: Define los volúmenes para persistencia de datos
+      - .:/app: Monta el directorio actual en /app
+      - /app/node_modules: Volumen para node_modules
+      - /app/.next: Volumen para la carpeta .next
+
+4. Cómo levantar el ambiente local de desarrollo:
+a) Clonar el repositorio:
+   git clone https://github.com/SardaVG/DockerActividad.git
+   cd DockerActividad
+
+b) Construir y ejecutar los contenedores:
+   docker-compose up --build
+
+c) La aplicación estará disponible en:
+   http://localhost:3000
+
+Para detener los contenedores:
+docker-compose down 
