@@ -4,14 +4,14 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files first (for better caching)
+COPY dockeractividad/package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy all files
-COPY . .
+# Copy the rest of the application
+COPY dockeractividad/ .
 
 # Build the Next.js application
 RUN npm run build
